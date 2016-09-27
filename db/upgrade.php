@@ -74,6 +74,7 @@ function xmldb_enrol_autoenrol_upgrade($oldversion) {
             }
 
             $instance->customtext1 = null;
+            $instance->customtext2 = null;
             $DB->update_record('enrol',$instance);
         }
 
