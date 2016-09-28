@@ -155,7 +155,7 @@ class enrol_autoenrol_plugin extends enrol_plugin {
                 return false;
             }
         }
-
+//print_object($instance);print_object($USER);
         // Very quick check to see if the user is being filtered.
         if ($instance->customchar1 != '') {
             if (!is_object($USER)) {
@@ -192,6 +192,23 @@ class enrol_autoenrol_plugin extends enrol_plugin {
                 return false;
             }
         }
+
+        if ($instance->customtext2 != '') {
+            if (!is_object($USER)) {
+                return false;
+            }   
+
+//print_object($USER->profile);
+            $simple = array_values($USER->profile);
+//print_object($simple);
+            // Require exact.
+            $custommatch = $instance->customtext2 == $simple[$instance->customtext4-1];
+//print_object($instance->customtext2); print_object($simple[$instance->customtext4-1]);
+//print_object($custommatch);
+            if (!$custommatch) {
+                return false;
+            }   
+        }   
 
         if ($instance->enrolstartdate != 0 and $instance->enrolstartdate > time()) {
             return false;
@@ -383,6 +400,10 @@ class enrol_autoenrol_plugin extends enrol_plugin {
         parent::delete_instance($instance);
     }
 
+    public function can_delete_instance($instance) {
+        $context = context_course::instance($instance->courseid);
+        return has_capability('enrol/autoenrol:config', $context);
+    }
     /**
      * Creates course enrol form, checks if form submitted
      * and enrols user if necessary. It can also redirect.
@@ -436,6 +457,7 @@ class enrol_autoenrol_plugin extends enrol_plugin {
             }
 
             $group = $this->get_group($instance, $name, $DB);
+//print_object($group);
             return groups_add_member($group, $user->id);
 
         }

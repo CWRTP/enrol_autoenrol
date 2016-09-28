@@ -113,6 +113,7 @@ class enrol_autoenrol_edit_form extends moodleform {
      * @throws coding_exception
      */
     protected function add_filtering_section() {
+        global $USER, $DB;
         $this->_form->addElement('header', 'filtersection', get_string('filtering', 'enrol_autoenrol'));
         $this->_form->setExpanded('filtersection', false);
 
@@ -122,7 +123,7 @@ class enrol_autoenrol_edit_form extends moodleform {
                 get_string('g_inst', 'enrol_autoenrol'),
                 get_string('g_lang', 'enrol_autoenrol'),
                 get_string('g_email', 'enrol_autoenrol'));
-
+//print_object($fields);
         $this->_form->addElement('select', 'customint2', get_string('groupon', 'enrol_autoenrol'), $fields);
         $this->_form->setType('customint2', PARAM_INT);
         $this->_form->addHelpButton('customint2', 'groupon', 'enrol_autoenrol');
@@ -141,6 +142,20 @@ class enrol_autoenrol_edit_form extends moodleform {
         $this->_form->setType('customint5', PARAM_INT);
         $this->_form->setDefault('customint5', 0);
         $this->_form->addHelpButton('customint5', 'countlimit', 'enrol_autoenrol');
+
+        $userFieldName = $DB->get_records_menu('user_info_field', array(), 'id', 'id, name');
+        $userFieldName = array('0' => 'Select..')+$userFieldName;
+//print_object($userFieldName);
+
+        $this->_form->addElement('select', 'customtext4', 'Choose profile field', $userFieldName);
+        $this->_form->setType('customtext4', PARAM_TEXT);
+        //$this->_form->addHelpButton('customtext4', 'filterusersby', '');
+
+        $this->_form->addElement('text', 'customtext2', 'Filter word to allow');
+        $this->_form->setDefault('customtext2', '');
+        $this->_form->setType('customtext2', PARAM_TEXT);
+        $this->_form->disabledIf('customtext2', 'customtext4', 'eq', '0');
+
     }
 
     /**

@@ -83,6 +83,7 @@ if ($mform->is_cancelled()) {
         if (has_capability('enrol/autoenrol:method', $context)) {
             $instance->customint1 = $data->customint1;
             $instance->customint3 = $data->customint3;
+            $instance->customtext4 = $data->customtext4;
         }
         $instance->customint2 = $data->customint2;
         $instance->customint4 = $data->customint4;
@@ -90,6 +91,7 @@ if ($mform->is_cancelled()) {
         $instance->customchar1 = $data->customchar1;
         $instance->customchar2 = $data->customchar2;
         $instance->customtext1 = $data->customtext1;
+        $instance->customtext2 = $data->customtext2;
 
         $DB->update_record('enrol', $instance);
 
@@ -105,10 +107,12 @@ if ($mform->is_cancelled()) {
         $fields = array('customint1' => 0, 'customint2' => $data->customint2,
                         'customint3' => 5, 'customint4' => $data->customint4,
                         'customint5' => $data->customint5, 'customint8' => $data->customint8,
-                        'customchar1' => $data->customchar1, 'customchar2' => $data->customchar2);
+                        'customchar1' => $data->customchar1, 'customchar2' => $data->customchar2, 
+                        'customtext2' => $data->customtext2, 'customtext4' => '0');
         if (has_capability('enrol/autoenrol:method', $context)) {
             $fields['customint1'] = $data->customint1;
             $fields['customint3'] = $data->customint3;
+            $fields['customtext4'] = $data->customtext4;
         }
         $instance->customtext1 = $data->customtext1;
         $plugin->add_instance($course, $fields);
